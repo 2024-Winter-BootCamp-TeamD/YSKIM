@@ -1,12 +1,14 @@
 /* eslint-disable */
 
-import { useState } from 'react';
+import React from "react";
+import { gsap } from "gsap";
 import './App.css';
 
 function App(){
 
   return (
-    <div>
+    <div className="app">
+    <div className="box">Hello</div>
     </div>
   );
 }
