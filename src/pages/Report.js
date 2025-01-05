@@ -4,7 +4,7 @@ function Report() {
   return (
     <div>
       <h2>Report</h2>
-      <p>View your reports here.</p>
+      <p>Nothing to Report....</p>
     </div>
   );
 }
