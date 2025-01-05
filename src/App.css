@@ -39,3 +39,8 @@
     background-color: #f7f7f7;
     overflow-y: auto;
   }
+
+  .highcharts-container {
+    margin: 20px auto;
+    max-width: 800px;
+  }
