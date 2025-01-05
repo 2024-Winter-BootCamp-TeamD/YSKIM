@@ -2,11 +2,11 @@
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Dashboard from "./pages/Dashboard.js";
-import Report from "./pages/Report.js";
-import History from "./pages/History.js";
-import Repositories from "./pages/Repositories.js";
-import Settings from "./pages/Settings.js";
+import Dashboard from "./pages/Dashboard.jsx";
+import Report from "./pages/Report.jsx";
+import History from "./pages/History.jsx";
+import Repositories from "./pages/Repositories.jsx";
+import Settings from "./pages/Settings.jsx";
 import "./App.css";
 import { ReactComponent as Logo } from "./logo.svg";
 import { MdDashboard } from "react-icons/md";

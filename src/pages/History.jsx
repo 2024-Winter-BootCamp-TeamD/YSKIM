@@ -2,21 +2,13 @@ import React, { useState, useEffect } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
+// 리뷰 데이터 배열
 const dummyData = [
   { id: 1, mode: "Optimize", title: "Review 1", details: "Details for Review 1" },
   { id: 2, mode: "Clean", title: "Review 2", details: "Details for Review 2" },
   { id: 3, mode: "Basic", title: "Review 3", details: "Details for Review 3" },
   { id: 4, mode: "Beginner", title: "Review 4", details: "Details for Review 4" },
 ];
-
-
-
-// { name: "Optimize<br>Mode", y: 13 },
-// { name: "Clean Code<br>Mode", y: 4 },
-// { name: "Basic<br>Mode", y: 16 },
-// { name: "Beginner<br>Mode", y: 14 },
-// ],
-
 
 function History() {
   const [selectedMode, setSelectedMode] = useState("All");
@@ -28,6 +20,7 @@ function History() {
       : dummyData.filter((review) => review.mode === selectedMode);
 
   useEffect(() => {
+    const totalLength = dummyData.length;
     Highcharts.chart("pie-chart-container", {
       chart: {
         type: "pie",
@@ -41,7 +34,7 @@ function History() {
             if (!customLabel) {
               customLabel = chart.options.chart.custom.label = chart.renderer
                 .label(
-                  `Total<br/><strong>47</strong>`,
+                  `Total<br/><strong>${totalLength}</strong>`,
                   0,
                   0
                 )
