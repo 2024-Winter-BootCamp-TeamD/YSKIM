@@ -1,9 +1,11 @@
+// Dashboard.js
 import React, { useEffect } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const Dashboard = () => {
   useEffect(() => {
+    // Custom animation for pie chart
     (function (H) {
       H.seriesTypes.pie.prototype.animate = function (init) {
         const series = this,
@@ -23,25 +25,20 @@ const Dashboard = () => {
           if (graphic && args) {
 
             graphic
-              // Set initial animation values
               .attr({
                 start: startAngleRad,
                 end: startAngleRad,
                 opacity: 1
               })
-              // Animate to the final position
               .animate({
                 start: args.start,
                 end: args.end
               }, {
                 duration: animation.duration / points.length
               }, function () {
-                // On complete, start animating the next point
                 if (points[point.index + 1]) {
                   fanAnimate(points[point.index + 1], args.end);
                 }
-                // On the last point, fade in the data labels, then
-                // apply the inner size
                 if (point.index === series.points.length - 1) {
                   series.dataLabelsGroup.animate({
                     opacity: 1
@@ -69,7 +66,6 @@ const Dashboard = () => {
         }
 
         if (init) {
-          // Hide points on init
           points.forEach(point => {
             point.opacity = 0;
           });
@@ -79,7 +75,8 @@ const Dashboard = () => {
       };
     }(Highcharts));
 
-    Highcharts.chart('container', {
+    // 파이차트
+    Highcharts.chart('pie-container', {
       chart: {
         type: 'pie'
       },
@@ -110,7 +107,6 @@ const Dashboard = () => {
         }
       },
       series: [{
-        // Disable mouse tracking on load, enable after custom animation
         enableMouseTracking: false,
         animation: {
           duration: 2000
@@ -131,12 +127,66 @@ const Dashboard = () => {
         },]
       }]
     });
-  }, []);
+
+    // 스플라인차트 (꺾은선 그래프)
+    Highcharts.chart('spline-container', {
+      chart: {
+        type: 'spline'
+      },
+      title: {
+        text: "You've imporved this much..."
+      },
+      xAxis: {
+        categories: [
+          '2014', '2015', '2016', '2017', '2018', '2019',
+          '2020', '2021', '2022', '2023', '2024', '2025'
+        ],
+      },
+      yAxis: {
+        title: {
+          text: ''
+        },
+        labels: {
+          format: '{value}'
+        }
+      },
+      tooltip: {
+        crosshairs: true,
+        shared: true
+      },
+      plotOptions: {
+        spline: {
+          marker: {
+            radius: 4,
+            lineColor: '#666666',
+            lineWidth: 1
+          }
+        }
+      },
+      series: [{
+        name: 'Submitted',
+        marker: {
+          symbol: 'circle'
+        },
+        data: [3, 2, 1, 3, 4, 6, 8, 7, 10, 12, 18, 21]
+
+      }, {
+        name: 'Approved',
+        marker: {
+          symbol: 'circle'
+        },
+        data: [1, 3, 4, 3, 3, 5, 4, 7, 8, 9, 10, 12]
+      }]
+    });
+  });
 
   return (
     <div>
       <h2>Overview</h2>
-      <div id="container" style={{ width: "100%", height: "400px" }}></div>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div id="spline-container" style={{ width: "48%", height: "400px" }}></div>
+        <div id="pie-container" style={{ width: "48%", height: "400px" }}></div>
+      </div>
     </div>
   );
 };
