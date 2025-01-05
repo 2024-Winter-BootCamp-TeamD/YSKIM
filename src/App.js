@@ -8,19 +8,25 @@ import History from "./pages/History.js";
 import Repositories from "./pages/Repositories.js";
 import Settings from "./pages/Settings.js";
 import "./App.css";
+import { ReactComponent as Logo } from "./logo.svg";
+import { MdDashboard } from "react-icons/md";
+import { HiDocumentReport } from "react-icons/hi";
+import { MdOutlineHistory } from "react-icons/md";
+import { RiGitRepositoryFill } from "react-icons/ri";
+import { IoIosSettings } from "react-icons/io";
 
 function App() {
   return (
     <Router>
       <div className="app">
         <nav className="sidebar">
-          <h1 className="logo">CODIFY</h1>
+        <Logo />
           <ul>
-            <li><Link to="/">Dashboard</Link></li>
-            <li><Link to="/report">Report</Link></li>
-            <li><Link to="/history">History</Link></li>
-            <li><Link to="/repositories">Repositories</Link></li>
-            <li><Link to="/settings">Settings</Link></li>
+            <li><Link to="/"><MdDashboard /> Dashboard</Link></li>
+            <li><Link to="/report"><HiDocumentReport /> Report</Link></li>
+            <li><Link to="/history"><MdOutlineHistory /> History</Link></li>
+            <li><Link to="/repositories"><RiGitRepositoryFill /> Repositories</Link></li>
+            <li><Link to="/settings"><IoIosSettings /> Settings</Link></li>
           </ul>
         </nav>
         <main className="content">

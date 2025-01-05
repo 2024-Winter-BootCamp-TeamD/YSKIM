@@ -14,11 +14,6 @@
     padding: 20px 0;
   }
   
-  .logo {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
   .sidebar ul {
     list-style: none;
     padding: 0;
@@ -44,4 +39,3 @@
     background-color: #f7f7f7;
     overflow-y: auto;
   }
-  
