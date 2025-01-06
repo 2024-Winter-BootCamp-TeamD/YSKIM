@@ -21,6 +21,7 @@ const dummyData = [
 function History() {
   const [selectedMode, setSelectedMode] = useState("All");
   const [selectedReview, setSelectedReview] = useState(null);
+  const pieChartContainerRef = React.useRef(null);
 
   const filteredData =
     selectedMode === "All"
@@ -34,7 +35,7 @@ function History() {
     }, {});
 
     const totalLength = dummyData.length;
-    Highcharts.chart("pie-chart-container", {
+    const chart = Highcharts.chart(pieChartContainerRef.current, {
       chart: {
         type: "pie",
         custom: {},
@@ -49,8 +50,8 @@ function History() {
               customLabel = chart.options.chart.custom.label = chart.renderer
                 .label(
                   `Reviews<br/><strong>${totalLength}</strong>`,
-                  0,
-                  0
+                  chart.plotLeft + chart.plotWidth / 2,
+                  chart.plotTop + chart.plotHeight / 2
                 )
                 .css({
                   color: "#000",
@@ -59,6 +60,11 @@ function History() {
                 .add();
             }
 
+            const bbox = customLabel.getBBox();
+            customLabel.attr({
+              x: chart.plotLeft + chart.plotWidth / 2 - bbox.width / 2,
+              y: chart.plotTop + chart.plotHeight / 2 - bbox.height / 2,
+            });
             const x = series.center[0] + chart.plotLeft;
             const y =
               series.center[1] +
@@ -83,7 +89,7 @@ function History() {
         },
       },
       title: {
-        text: "Categories",
+        text: "",
       },
       tooltip: {
         pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
@@ -98,6 +104,9 @@ function History() {
           dataLabels: {
             enabled: true,
             format: "<b>{point.name}</b>: {point.y}",
+            style: {
+              fontSize: "18px",
+            }
           },
           point: {
             events: {
@@ -122,6 +131,27 @@ function History() {
         },
       ],
     });
+
+    let previousWidth = 0;
+    let previousHeight = 0;
+
+    const resizeObserver = new ResizeObserver(() => {
+      const containerWidth = pieChartContainerRef.current.offsetWidth;
+      const containerHeight = pieChartContainerRef.current.offsetHeight;
+
+      if (containerWidth !== previousWidth || containerHeight !== previousHeight) {
+        previousWidth = containerWidth;
+        previousHeight = containerHeight;
+        chart.setSize(containerWidth, containerHeight, false);
+      }
+    });
+
+    resizeObserver.observe(pieChartContainerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+      chart.destroy();
+    };
   }, []);
 
   const colorMapping = {
