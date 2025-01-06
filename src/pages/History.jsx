@@ -21,7 +21,6 @@ const dummyData = [
 function History() {
   const [selectedMode, setSelectedMode] = useState("All");
   const [selectedReview, setSelectedReview] = useState(null);
-  const pieChartContainerRef = React.useRef(null);
 
   const filteredData =
     selectedMode === "All"
@@ -35,7 +34,7 @@ function History() {
     }, {});
 
     const totalLength = dummyData.length;
-    const chart = Highcharts.chart(pieChartContainerRef.current, {
+    Highcharts.chart("pie-chart-container", {
       chart: {
         type: "pie",
         custom: {},
@@ -131,29 +130,8 @@ function History() {
         },
       ],
     });
-
-    let previousWidth = 0;
-    let previousHeight = 0;
-
-    const resizeObserver = new ResizeObserver(() => {
-      const containerWidth = pieChartContainerRef.current.offsetWidth;
-      const containerHeight = pieChartContainerRef.current.offsetHeight;
-
-      if (containerWidth !== previousWidth || containerHeight !== previousHeight) {
-        previousWidth = containerWidth;
-        previousHeight = containerHeight;
-        chart.setSize(containerWidth, containerHeight, false);
-      }
-    });
-
-    resizeObserver.observe(pieChartContainerRef.current);
-
-    return () => {
-      resizeObserver.disconnect();
-      chart.destroy();
-    };
   }, []);
-
+  // Review List의 모드별 색상 매핑
   const colorMapping = {
       Optimize: "#2CAFFE",
       Clean: "#6D68DE",
