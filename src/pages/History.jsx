@@ -6,16 +6,16 @@ import HighchartsReact from "highcharts-react-official";
 // 리뷰 데이터 배열
 // 리뷰 데이터에는 모드(mode), 인덱스(title), 상세 내용(details), 날짜(date), PR 제목(pr), PR 주소(pr_)이 포함됩니다.
 const dummyData = [
-  { mode: "Optimize", title: "Review 1", details: "Details for Review 1", date: "2023.11.03", pr: "Feat/#68 수정하기api 반환값에 origin_url추가" },
-  { mode: "Clean", title: "Review 2", details: "Details for Review 2", date: "2023.11.05", pr: "Feat/#59 Documents관련 api 암호화 로직 추가" },
-  { mode: "Basic", title: "Review 3", details: "Details for Review 3", date: "2023.12.08", pr: "Feat/#48 modified_html 함수 Celary로 비동기 처리" },
-  { mode: "Beginner", title: "Review 4", details: "Details for Review 4", date: "2023.12.08", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
-  { mode: "Beginner", title: "Review 5", details: "Details for Review 5", date: "2023.12.11", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
-  { mode: "Basic", title: "Review 6", details: "Details for Review 6", date: "2023.12.13", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
-  { mode: "Beginner", title: "Review 7", details: "Details for Review 7", date: "2023.12.17", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
-  { mode: "Clean", title: "Review 8", details: "Details for Review 8", date: "2023.12.22", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
-  { mode: "Clean", title: "Review 9", details: "Details for Review 9", date: "2023.12.27", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
-  { mode: "Beginner", title: "Review 10", details: "Details for Review 10", date: "2024.01.02", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
+  { mode: "Quiz", title: "Review 1", details: "Details for Review 1", date: "2023.11.03", pr: "Feat/#68 수정하기api 반환값에 origin_url추가" },
+  { mode: "Newbie", title: "Review 2", details: "Details for Review 2", date: "2023.11.05", pr: "Feat/#59 Documents관련 api 암호화 로직 추가" },
+  { mode: "Optimize", title: "Review 3", details: "Details for Review 3", date: "2023.12.08", pr: "Feat/#48 modified_html 함수 Celary로 비동기 처리" },
+  { mode: "CleanCode", title: "Review 4", details: "Details for Review 4", date: "2023.12.08", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
+  { mode: "CleanCode", title: "Review 5", details: "Details for Review 5", date: "2023.12.11", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
+  { mode: "Optimize", title: "Review 6", details: "Details for Review 6", date: "2023.12.13", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
+  { mode: "CleanCode", title: "Review 7", details: "Details for Review 7", date: "2023.12.17", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
+  { mode: "Newbie", title: "Review 8", details: "Details for Review 8", date: "2023.12.22", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
+  { mode: "Newbie", title: "Review 9", details: "Details for Review 9", date: "2023.12.27", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
+  { mode: "CleanCode", title: "Review 10", details: "Details for Review 10", date: "2024.01.02", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
 ];
 
 function History() {
@@ -122,10 +122,10 @@ function History() {
           colorByPoint: true,
           innerSize: "75%",
           data: [
+            { name: "Quiz", y: modeCounts["Quiz"] || 0 },
+            { name: "Newbie", y: modeCounts["Newbie"] || 0 },
             { name: "Optimize", y: modeCounts["Optimize"] || 0 },
-            { name: "Clean", y: modeCounts["Clean"] || 0 },
-            { name: "Basic", y: modeCounts["Basic"] || 0 },
-            { name: "Beginner", y: modeCounts["Beginner"] || 0 },
+            { name: "CleanCode", y: modeCounts["CleanCode"] || 0 },
           ],
         },
       ],
@@ -133,10 +133,10 @@ function History() {
   }, []);
   // Review List의 모드별 색상 매핑
   const colorMapping = {
-      Optimize: "#2CAFFE",
-      Clean: "#6D68DE",
-      Basic: "#19FB8B",
-      Beginner: "#FF834E",
+      Quiz: "#FF715B",
+      Newbie: "#7A74EF",
+      Optimize: "#FDCA40",
+      CleanCode: "#29E7CD",
     };
 
   return (
