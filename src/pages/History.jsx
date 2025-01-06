@@ -4,6 +4,7 @@ import { GoChevronRight } from "react-icons/go";
 import HighchartsReact from "highcharts-react-official";
 
 // 리뷰 데이터 배열
+// 리뷰 데이터에는 모드(mode), 인덱스(title), 상세 내용(details), 날짜(date), PR 제목(pr), PR 주소(pr_)이 포함됩니다.
 const dummyData = [
   { mode: "Optimize", title: "Review 1", details: "Details for Review 1", date: "2023.11.03", pr: "Feat/#68 수정하기api 반환값에 origin_url추가" },
   { mode: "Clean", title: "Review 2", details: "Details for Review 2", date: "2023.11.05", pr: "Feat/#59 Documents관련 api 암호화 로직 추가" },
@@ -119,23 +120,28 @@ function History() {
             { name: "Beginner", y: modeCounts["Beginner"] || 0 },
           ],
         },
-      ],      
+      ],
     });
   }, []);
 
-  // Review List의 모드별 색상 매핑
-  const colorMapping = {
-    Optimize: "#2CAFFE",
-    Clean: "#6D68DE",
-    Basic: "#19FB8B",
-    Beginner: "#FF834E",
-  };
+  const colorMapping = {
+      Optimize: "#2CAFFE",
+      Clean: "#6D68DE",
+      Basic: "#19FB8B",
+      Beginner: "#FF834E",
+    };
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gridTemplateRows: "1fr 1fr", gap: "20px", height: "calc(100vh - 40px)", padding: "20px", boxSizing: "border-box" }}>
       {/* Pie Chart */}
-      <div style={{ gridColumn: "1 / 2", gridRow: "1 / 2", padding: "40px", border: "1px solid #ccc", borderRadius: "8px" , height: "600px", boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.2)"}}>  
-        <div id="pie-chart-container" style={{ height: "600px" }}></div>
+      <div style={{ gridColumn: "1 / 2", gridRow: "1 / 2", padding: "10px", border: "1px solid #ccc", borderRadius: "8px" , height: "600px", boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.2)"}}>  
+        <h3 style={{marginBottom: "0px"}}>Categories</h3>
+        <div 
+          id="pie-chart-container" 
+          style={{ 
+            height: "95%",
+            width: "100%",
+            boxSizing: "border-box", }}></div>
       </div>
 
       {/* Review List */}
