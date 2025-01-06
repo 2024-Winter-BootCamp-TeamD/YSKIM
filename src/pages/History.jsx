@@ -6,11 +6,11 @@ import HighchartsReact from "highcharts-react-official";
 // 리뷰 데이터 배열
 // 리뷰 데이터에는 모드(mode), 인덱스(title), 상세 내용(details), 날짜(date), PR 제목(pr), PR 주소(pr_)이 포함됩니다.
 const dummyData = [
-  { mode: "Quiz", title: "Review 1", details: "Details for Review 1", date: "2023.11.03", pr: "Feat/#68 수정하기api 반환값에 origin_url추가" },
+  { mode: "Study", title: "Review 1", details: "Details for Review 1", date: "2023.11.03", pr: "Feat/#68 수정하기api 반환값에 origin_url추가" },
   { mode: "Newbie", title: "Review 2", details: "Details for Review 2", date: "2023.11.05", pr: "Feat/#59 Documents관련 api 암호화 로직 추가" },
   { mode: "Optimize", title: "Review 3", details: "Details for Review 3", date: "2023.12.08", pr: "Feat/#48 modified_html 함수 Celary로 비동기 처리" },
   { mode: "CleanCode", title: "Review 4", details: "Details for Review 4", date: "2023.12.08", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
-  { mode: "CleanCode", title: "Review 5", details: "Details for Review 5", date: "2023.12.11", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
+  { mode: "Basic", title: "Review 5", details: "Details for Review 5", date: "2023.12.11", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
   { mode: "Optimize", title: "Review 6", details: "Details for Review 6", date: "2023.12.13", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
   { mode: "CleanCode", title: "Review 7", details: "Details for Review 7", date: "2023.12.17", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
   { mode: "Newbie", title: "Review 8", details: "Details for Review 8", date: "2023.12.22", pr: "Feat/#51 검토결과 - tasks.py 비동기 처리" },
@@ -22,10 +22,22 @@ function History() {
   const [selectedMode, setSelectedMode] = useState("All");
   const [selectedReview, setSelectedReview] = useState(null);
 
+  const headerRef = React.useRef(null); // Ref for the header element
+  const [headerWidth, setHeaderWidth] = useState(0); // State for header width
+
   const filteredData =
     selectedMode === "All"
       ? dummyData
       : dummyData.filter((review) => review.mode === selectedMode);
+
+  
+  useEffect(() => {
+    // Get header width when the component mounts
+    if (headerRef.current) {
+      const { width } = headerRef.current.getBoundingClientRect();
+      setHeaderWidth(width);
+    }
+  }, []);
 
   useEffect(() => {
     const modeCounts = dummyData.reduce((acc, review) => {
@@ -37,6 +49,7 @@ function History() {
     Highcharts.chart("pie-chart-container", {
       chart: {
         type: "pie",
+        width: headerWidth,
         custom: {},
         spacingBottom: 50,
         events: {
@@ -47,16 +60,16 @@ function History() {
 
             if (!customLabel) {
               customLabel = chart.options.chart.custom.label = chart.renderer
-                .label(
-                  `Reviews<br/><strong>${totalLength}</strong>`,
-                  chart.plotLeft + chart.plotWidth / 2,
-                  chart.plotTop + chart.plotHeight / 2
-                )
-                .css({
-                  color: "#000",
-                  textAnchor: "middle",
-                })
-                .add();
+              .label(
+                `Total<br/><strong>${totalLength}</strong>`,
+                chart.plotLeft + chart.plotWidth / 2,
+                chart.plotTop + chart.plotHeight / 2,
+              )
+              .css({
+                color: "#000",
+                textAnchor: "middle",
+              })
+              .add();
             }
 
             const bbox = customLabel.getBBox();
@@ -120,12 +133,13 @@ function History() {
         {
           name: "Reviews",
           colorByPoint: true,
-          innerSize: "75%",
+          innerSize: "45%",
           data: [
-            { name: "Quiz", y: modeCounts["Quiz"] || 0 },
-            { name: "Newbie", y: modeCounts["Newbie"] || 0 },
-            { name: "Optimize", y: modeCounts["Optimize"] || 0 },
-            { name: "CleanCode", y: modeCounts["CleanCode"] || 0 },
+            { name: "Study", y: modeCounts["Study"] || 0, color: "#FFC107" }, 
+            { name: "Newbie", y: modeCounts["Newbie"] || 0, color: "#2196F3" },
+            { name: "Optimize", y: modeCounts["Optimize"] || 0, color: "#4CAF50" },
+            { name: "CleanCode", y: modeCounts["CleanCode"] || 0, color: "#9E9E9E" },
+            { name: "Basic", y: modeCounts["Basic"] || 0, color: "#FF5722" },
           ],
         },
       ],
@@ -133,17 +147,18 @@ function History() {
   }, []);
   // Review List의 모드별 색상 매핑
   const colorMapping = {
-      Quiz: "#FF715B",
-      Newbie: "#7A74EF",
-      Optimize: "#FDCA40",
-      CleanCode: "#29E7CD",
+      Study: "#FFC107",
+      Newbie: "#2196F3",
+      Optimize: "#4CAF50",
+      CleanCode: "#9E9E9E",
+      Basic: "#FF5722",
     };
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gridTemplateRows: "1fr 1fr", gap: "20px", height: "calc(100vh - 40px)", padding: "20px", boxSizing: "border-box" }}>
-      {/* Pie Chart */}
+      {/* Mode Statistics */}
       <div style={{ gridColumn: "1 / 2", gridRow: "1 / 2", padding: "10px", border: "1px solid #ccc", borderRadius: "8px" , height: "600px", boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.2)"}}>  
-        <h3 style={{marginBottom: "0px"}}>Categories</h3>
+        <h3 style={{marginBottom: "0px"}}>Mode Statistics</h3>
         <div 
           id="pie-chart-container" 
           style={{ 
@@ -152,9 +167,9 @@ function History() {
             boxSizing: "border-box", }}></div>
       </div>
 
-      {/* Review List */}
+      {/* All Reviews */}
       <div style={{ gridColumn: "1 / 2", gridRow: "2 / 3", padding: "10px", border: "1px solid #ccc", borderRadius: "8px", overflowY: "hidden", boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.2)"}}>
-        <h3 style={{marginBottom: "10px"}}>Review List</h3>
+        <h3 style={{marginBottom: "10px"}}>All Reviews</h3>
         <ul style={{ listStyleType: "none", padding: 0, margin: 0 , overflowY: "scroll", height: "calc(100% - 40px)"}}>
           {filteredData.map((review) => (
             <li
@@ -166,8 +181,11 @@ function History() {
                 padding: "10px",
                 borderBottom: "1px solid #ccc",
               }}>
+              <div style={{color: colorMapping[review.mode], cursor: "pointer", paddingRight: "0px"}} onClick={() => setSelectedReview(review)}>
+                <strong>{review.mode}</strong>
+              </div>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <div
+                {/* <div
                   style={{
                     width: "40px",
                     height: "40px",
@@ -175,13 +193,12 @@ function History() {
                     backgroundColor: "#ddd",
                     marginRight: "10px",
                   }}
-                ></div>
+                ></div> */}
                 <div>
-                  <div>{review.date}</div>
                   <div style={{ fontWeight: "bold" }}>{review.pr}</div>
                 </div>
               </div>
-              <div style={{color: colorMapping[review.mode], cursor: "pointer"}} onClick={() => setSelectedReview(review)}><strong>{review.mode} Mode</strong></div>
+              <div>{review.date}</div>
               <div
                 style={{
                   position: "relative",
@@ -204,7 +221,7 @@ function History() {
 
       {/* Code Reviews */}
       <div style={{ gridColumn: "2 / 3", gridRow: "1 / 3", padding: "10px", border: "1px solid #ccc", borderRadius: "8px", boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.2)"}}>
-        <h3>Code Reviews</h3>
+        <h3>Review</h3>
         {selectedReview ? (
           <div>
             <h4>{selectedReview.title}</h4>

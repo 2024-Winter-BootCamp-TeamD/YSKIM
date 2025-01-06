@@ -76,7 +76,7 @@ const Dashboard = () => {
     }(Highcharts));
 
     // 파이차트
-    Highcharts.chart('pie-container', {
+    const chart = Highcharts.chart('pie-container', {
       chart: {
         type: 'pie'
       },
