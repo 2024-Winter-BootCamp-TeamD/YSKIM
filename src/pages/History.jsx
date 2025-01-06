@@ -4,6 +4,7 @@ import { GoChevronRight } from "react-icons/go";
 import HighchartsReact from "highcharts-react-official";
 
 // 리뷰 데이터 배열
+// 리뷰 데이터에는 모드(mode), 인덱스(title), 상세 내용(details), 날짜(date), PR 제목(pr), PR 주소(pr_)이 포함됩니다.
 const dummyData = [
   { mode: "Optimize", title: "Review 1", details: "Details for Review 1", date: "2023.11.03", pr: "Feat/#68 수정하기api 반환값에 origin_url추가" },
   { mode: "Clean", title: "Review 2", details: "Details for Review 2", date: "2023.11.05", pr: "Feat/#59 Documents관련 api 암호화 로직 추가" },
@@ -20,6 +21,7 @@ const dummyData = [
 function History() {
   const [selectedMode, setSelectedMode] = useState("All");
   const [selectedReview, setSelectedReview] = useState(null);
+  const pieChartContainerRef = React.useRef(null);
 
   const filteredData =
     selectedMode === "All"
@@ -33,7 +35,7 @@ function History() {
     }, {});
 
     const totalLength = dummyData.length;
-    Highcharts.chart("pie-chart-container", {
+    const chart = Highcharts.chart(pieChartContainerRef.current, {
       chart: {
         type: "pie",
         custom: {},
@@ -48,8 +50,8 @@ function History() {
               customLabel = chart.options.chart.custom.label = chart.renderer
                 .label(
                   `Reviews<br/><strong>${totalLength}</strong>`,
-                  0,
-                  0
+                  chart.plotLeft + chart.plotWidth / 2,
+                  chart.plotTop + chart.plotHeight / 2
                 )
                 .css({
                   color: "#000",
@@ -58,6 +60,11 @@ function History() {
                 .add();
             }
 
+            const bbox = customLabel.getBBox();
+            customLabel.attr({
+              x: chart.plotLeft + chart.plotWidth / 2 - bbox.width / 2,
+              y: chart.plotTop + chart.plotHeight / 2 - bbox.height / 2,
+            });
             const x = series.center[0] + chart.plotLeft;
             const y =
               series.center[1] +
@@ -82,7 +89,7 @@ function History() {
         },
       },
       title: {
-        text: "Categories",
+        text: "",
       },
       tooltip: {
         pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
@@ -97,6 +104,9 @@ function History() {
           dataLabels: {
             enabled: true,
             format: "<b>{point.name}</b>: {point.y}",
+            style: {
+              fontSize: "18px",
+            }
           },
           point: {
             events: {
@@ -121,6 +131,27 @@ function History() {
         },
       ],      
     });
+
+    let previousWidth = 0;
+    let previousHeight = 0;
+
+    const resizeObserver = new ResizeObserver(() => {
+      const containerWidth = pieChartContainerRef.current.offsetWidth;
+      const containerHeight = pieChartContainerRef.current.offsetHeight;
+
+      if (containerWidth !== previousWidth || containerHeight !== previousHeight) {
+        previousWidth = containerWidth;
+        previousHeight = containerHeight;
+        chart.setSize(containerWidth, containerHeight, false);
+      }
+    });
+
+    resizeObserver.observe(pieChartContainerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+      chart.destroy();
+    };
   }, []);
 
   // Review List의 모드별 색상 매핑
@@ -134,8 +165,15 @@ function History() {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gridTemplateRows: "1fr 1fr", gap: "20px", height: "calc(100vh - 40px)", padding: "20px", boxSizing: "border-box" }}>
       {/* Pie Chart */}
-      <div style={{ gridColumn: "1 / 2", gridRow: "1 / 2", padding: "40px", border: "1px solid #ccc", borderRadius: "8px" , height: "600px", boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.2)"}}>  
-        <div id="pie-chart-container" style={{ height: "600px" }}></div>
+      <div style={{ gridColumn: "1 / 2", gridRow: "1 / 2", padding: "10px", border: "1px solid #ccc", borderRadius: "8px" , height: "600px", boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.2)"}}>  
+        <h3 style={{marginBottom: "0px"}}>Categories</h3>
+        <div 
+          ref={pieChartContainerRef} 
+          id="pie-chart-container" 
+          style={{ 
+            height: "95%",
+            width: "100%",
+            boxSizing: "border-box", }}></div>
       </div>
 
       {/* Review List */}
