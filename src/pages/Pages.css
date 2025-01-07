@@ -1,0 +1,73 @@
+.repositories-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .repositories-column {
+    width: 45%;
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h3 {
+    text-align: center;
+    color: #333;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .repository-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .repo-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .organization-name {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #333;
+  }
+  
+  .repository-name {
+    color: #555;
+  }
+  
+  .toggle-icon {
+    background-color: #ffffff00;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
+  }
+  
+  .toggle-icon:hover {
+    background-color: #77777738;
+  }
+  
