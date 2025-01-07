@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Highcharts from "highcharts";
 import { GoChevronRight } from "react-icons/go";
-import HighchartsReact from "highcharts-react-official";
 
 // 리뷰 데이터 배열
 // 리뷰 데이터에는 모드(mode), 인덱스(title), 상세 내용(details), 날짜(date), PR 제목(pr), PR 주소(pr_)이 포함됩니다.
@@ -144,7 +143,7 @@ function History() {
         },
       ],
     });
-  }, []);
+  });
   // Review List의 모드별 색상 매핑
   const colorMapping = {
       Study: "#FFC107",
@@ -185,15 +184,6 @@ function History() {
                 <strong>{review.mode}</strong>
               </div>
               <div style={{ display: "flex", alignItems: "center" }}>
-                {/* <div
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "50%",
-                    backgroundColor: "#ddd",
-                    marginRight: "10px",
-                  }}
-                ></div> */}
                 <div>
                   <div style={{ fontWeight: "bold" }}>{review.pr}</div>
                 </div>
