@@ -1,43 +1,55 @@
+/* General Container */
 .repositories-container {
-    display: flex;
-    justify-content: space-between;
     padding: 20px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
-  .repositories-column {
-    width: 45%;
-    background-color: #f7f7f7;
-    padding: 10px;
+  /* Selected Section */
+  .repositories-section {
+    width: 90%;
+    max-width: 1200px;
+    background-color: #ffffff;
+    padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
   }
   
-  h3 {
+  .repositories-section h3 {
     text-align: center;
+    margin-bottom: 15px;
     color: #333;
   }
   
-  ul {
+  .repository-list {
     list-style: none;
     padding: 0;
+    margin: 0;
   }
   
   .repository-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #fff;
-    margin: 8px 0;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f7f7f7;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .repository-item:hover {
+    background-color: #e9e9e9;
   }
   
   .profile-image {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 15px;
   }
   
   .repo-details {
@@ -48,26 +60,123 @@
   
   .organization-name {
     font-weight: bold;
-    text-decoration: underline;
-    color: #333;
-  }
-  
-  .repository-name {
     color: #555;
   }
   
-  .toggle-icon {
-    background-color: #ffffff00;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #000;
-    font-weight: bold;
+  .repository-name {
+    color: #777;
+    margin-bottom: 5px;
   }
   
-  .toggle-icon:hover {
-    background-color: #77777738;
+  .repo-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .language-stats {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #888;
+  }
+  
+  .language-item {
+    margin-right: 8px;
+  }
+  
+  .toggle-button {
+    cursor: pointer;
+    font-size: 18px;
+    color: #ff6666;
+    transition: color 0.2s ease;
+  }
+  
+  .toggle-button:hover {
+    color: #cc0000;
+  }
+  
+  .add-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .add-button:hover {
+    background-color: #45a049;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-container {
+    width: 90%;
+    max-width: 800px;
+    background-color: #E8E8E8;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .modal-container h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .apply-button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .apply-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Fade-in Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.95);
+    }
   }
   
