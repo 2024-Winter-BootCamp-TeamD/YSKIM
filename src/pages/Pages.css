@@ -90,6 +90,7 @@
     font-size: 18px;
     color: #ff6666;
     transition: color 0.2s ease;
+    background-color: transparent;
   }
   
   .toggle-button:hover {
@@ -178,5 +179,22 @@
       opacity: 0;
       transform: scale(0.95);
     }
+  }
+
+  .language-bar-container {
+    display: flex;
+    height: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .language-bar-segment {
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  .language-bar-segment:hover {
+    opacity: 0.8;
   }
   

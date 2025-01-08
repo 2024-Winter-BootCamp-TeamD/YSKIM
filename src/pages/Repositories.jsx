@@ -2,6 +2,17 @@ import React, { useState } from "react";
 import "./Pages.css";
 import { IoIosArrowUp } from "react-icons/io";
 import { MdOutlineCancel } from "react-icons/md";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 // 테스트용 데이터. 실제 데이터로 교체 필요.
 const initialRepositories = [
@@ -138,19 +149,32 @@ function Repositories() {
     setIsModalOpen(false);
   };
 
-  const renderLanguages = (languages) => {
-    return Object.entries(languages).map(([language, percentage]) => (
-      <span key={language} className="language-item">
-        {language}: {percentage}%
-      </span>
-    ));
+  const renderLanguageBar = (languages) => {
+    const totalWidth = 100; // 막대 전체 길이 (px)
+    const colors = ["#F7DF1E", "#E34F26", "#1572B6", "#4CAF50", "#FFC107"];
+    const languageEntries = Object.entries(languages);
+
+    return (
+      <div className="language-bar-container" style={{ width: `${totalWidth}px` }}>
+        {languageEntries.map(([language, percentage], index) => (
+          <div
+            key={language}
+            className="language-bar-segment"
+            style={{
+              width: `${(percentage / 100) * totalWidth}px`,
+              backgroundColor: colors[index % colors.length],
+            }}
+            title={`${language}: ${percentage}%`} // 툴팁 표시
+          ></div>
+        ))}
+      </div>
+    );
   };
 
   return (
     <div className="repositories-container">
-      {/* Selected Section */}
       <div className="repositories-section">
-        <h3>Selected Repositories</h3>
+        <h3>Repositories</h3>
         <ul className="repository-list">
           {repositories
             .filter((repo) => repo.selected)
@@ -167,17 +191,15 @@ function Repositories() {
                   alt={`${repo.repository} profile`}
                   className="profile-image"
                 />
-                <div className="repo-details">
-                  <span className="organization-name">{repo.organization}</span>
-                  <span className="repository-name">{repo.repository}</span>
-                  <div className="repo-stats">
-                    <span>Fork: {repo.fork}</span>
-                    <span>Star: {repo.star}</span>
-                    <span>Issue: {repo.issue}</span>
-                    <span>Pull: {repo.pull}</span>
-                  </div>
-                  <div className="language-stats">{renderLanguages(repo.languages)}</div>
+                <span className="organization-name">{repo.organization}</span>
+                <span className="repository-name">{repo.repository}</span>
+                <div className="repo-stats">
+                  <span>Fork: {repo.fork}</span>
+                  <span>Star: {repo.star}</span>
+                  <span>Issue: {repo.issue}</span>
+                  <span>Pull: {repo.pull}</span>
                 </div>
+                <div className="language-bar">{renderLanguageBar(repo.languages)}</div>
               </li>
             ))}
         </ul>
@@ -186,37 +208,33 @@ function Repositories() {
         </button>
       </div>
 
-      {/* Modal Section */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-container">
-            <h3>Unselected Repositories</h3>
             <ul className="repository-list">
               {repositories
                 .filter((repo) => !repo.selected)
                 .map((repo) => (
                   <li key={repo.id} className="repository-item">
-                    <img
-                      src={repo.profileImage}
-                      alt={`${repo.repository} profile`}
-                      className="profile-image"
-                    />
-                    <div className="repo-details">
-                      <span className="organization-name">{repo.organization}</span>
-                      <span className="repository-name">{repo.repository}</span>
-                      <div className="repo-stats">
-                        <span>Fork: {repo.fork}</span>
-                        <span>Star: {repo.star}</span>
-                        <span>Issue: {repo.issue}</span>
-                        <span>Pull: {repo.pull}</span>
-                      </div>
-                      <div className="language-stats">{renderLanguages(repo.languages)}</div>
-                    </div>
                     <input
                       type="checkbox"
                       checked={selectedInModal.includes(repo.id)}
                       onChange={() => toggleModalSelection(repo.id)}
                     />
+                    <img
+                      src={repo.profileImage}
+                      alt={`${repo.repository} profile`}
+                      className="profile-image"
+                    />
+                    <span className="organization-name">{repo.organization}</span>
+                    <span className="repository-name">{repo.repository}</span>
+                    <div className="repo-stats">
+                      <span>Fork: {repo.fork}</span>
+                      <span>Star: {repo.star}</span>
+                      <span>Issue: {repo.issue}</span>
+                      <span>Pull: {repo.pull}</span>
+                    </div>
+                    <div className="language-graph">{renderLanguageBar(repo.languages)}</div>
                   </li>
                 ))}
             </ul>

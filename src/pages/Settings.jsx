@@ -4,7 +4,7 @@ function Settings() {
   return (
     <div>
       <h2>Settings</h2>
-      <p>Manage your settings here.</p>
+      <p>Legacy Here</p>
     </div>
   );
 }
